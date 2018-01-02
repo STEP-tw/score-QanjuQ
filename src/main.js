@@ -1,17 +1,18 @@
 let game=undefined;
-let food=undefined;
 let numberOfRows=60;
 let numberOfCols=120;
-
-let animator=undefined;
+let animatorId = undefined;
 
 const animateSnake=function() {
   let details=game.move();
   paintBody(details.oldHead);
   unpaintSnake(details.oldTail);
   paintHead(details.head);
+  game.stopGame();
   if(game.hasSnakeEatenFood()) {
     game.grow();
+    game.incrementScore();
+    updateScore(game.getScore());
     game.createFood();
     drawFood(game.getFood());
   }
@@ -44,13 +45,12 @@ const createSnake=function() {
   body.push(tail);
   body.push(tail.next());
   let head=tail.next().next();
-
-  snake=new Snake(head,body);
+  let snake=new Snake(head,body);
   game.addSnake(snake);
 }
 
 const createFood=function(numberOfRows,numberOfCols) {
-  food=generateRandomPosition(numberOfCols,numberOfRows);
+  let food=generateRandomPosition(numberOfCols,numberOfRows);
 }
 
 const createGame=function() {
@@ -67,7 +67,7 @@ const startGame=function() {
   game.createFood();
   drawFood(game.getFood());
   addKeyListener();
-  animator=setInterval(animateSnake,140);
+  game.animatorId=setInterval(animateSnake,140);
 }
 
 window.onload=startGame;
