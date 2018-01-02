@@ -39,6 +39,10 @@ Position.prototype.isSameCoordAs=function(other) {
   return this.x==other.x && this.y==other.y;
 }
 
+Position.prototype.isCoordsNotInRange = function(coord,boundary){
+  return this[coord] <= 0 || this[coord] >= boundary;
+}
+
 Position.prototype.getCoord=function() {
   return [this.x,this.y];
 }
