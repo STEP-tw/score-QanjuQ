@@ -3,6 +3,7 @@ const Game=function(topLeft,bottomRight) {
   this.bottomRight=bottomRight;
   this.snake={};
   this.food={};
+  this.score = 0;
 }
 
 Game.prototype.addSnake=function(snake) {
@@ -10,7 +11,7 @@ Game.prototype.addSnake=function(snake) {
 }
 
 Game.prototype.getSnake=function() {
-  return snake;
+  return this.snake;
 }
 
 Game.prototype.turnLeft=function() {
@@ -46,7 +47,6 @@ Game.prototype.hasSnakeEatenFood=function() {
 Game.prototype.createFood=function() {
   console.log(this.bottomRight);
   let position=generateRandomPosition(this.bottomRight.x,this.bottomRight.y);
-
   let random=generateRandomNumberBetween(0,10);
   let growthFactor=1;
   let superFood=false;
@@ -55,4 +55,28 @@ Game.prototype.createFood=function() {
     superFood=true;
   }
   this.food=new Food(position,growthFactor,superFood);
+}
+
+Game.prototype.incrementScore = function(){
+  this.score += 10;
+}
+
+Game.prototype.getScore = function(){
+  return this.score;
+}
+
+Game.prototype.didSnakeHitAnyWall = function(){
+  let headReference = this.snake.getHead();
+  return headReference.isCoordsNotInRange('x',this.topLeft) ||
+    headReference.isCoordsNotInRange('y',this.bottomRight);
+}
+
+Game.prototype.isOver = function(){
+  let snake = this.getSnake();
+  return snake.didEatItself() || this.didSnakeHitAnyWall();
+}
+
+Game.prototype.stopGame = function(){
+  if(this.isOver())
+    clearInterval(game.animatorId);
 }
