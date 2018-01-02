@@ -40,5 +40,9 @@ const drawFood=function(food) {
   if(food.isSuperFood())
     paintCell(food.getPosition(),"super-food");
   else
-  paintCell(food.getPosition(),"food");  
+  paintCell(food.getPosition(),"food");
+}
+
+const updateScore = function(score){
+  document.getElementById('score').innerHTML = score;
 }
